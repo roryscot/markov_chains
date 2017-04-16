@@ -130,10 +130,31 @@ n = [
   [0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0]
   ]
+q = [
+  [0,1/2],
+  [4/9,0],
+  ]
+
+
+def identity_matrix(m):
+  identity = []
+  for i in range(0,len(m)):
+    row = []
+    for j in range(0,len(m)):
+      if (i == j ):
+        row.append(1)
+      else:
+        row.append(0)
+    identity.append(row)
+    print(row)
+  return identity
+
+def matrix_subtraction(m, identity):
+
 
 
 #print(answer(m))
-print(answer(n))
+#print(answer(n))
 
 
 def transposeMatrix(m):
@@ -146,6 +167,7 @@ def transposeMatrix(m):
             else:
                 tRow.append(m[c][r])
         t.append(tRow)
+        print(tRow)
     return t
 
 def getMatrixMinor(m,i,j):
@@ -163,6 +185,7 @@ def getMatrixDeternminant(m):
 
 def getMatrixInverse(m):
     determinant = getMatrixDeternminant(m)
+    print(determinant)
     #special case for 2x2 matrix:
     if len(m) == 2:
         return [[m[1][1]/determinant, -1*m[0][1]/determinant],
@@ -181,3 +204,5 @@ def getMatrixInverse(m):
         for c in range(len(cofactors)):
             cofactors[r][c] = cofactors[r][c]/determinant
     return cofactors
+
+print(identity_matrix(q))
