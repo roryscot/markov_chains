@@ -18,13 +18,14 @@ def answer(m):
         sum += m[i][j]
       if sum == 0:
         terminal.append(i)
-
-      divisions.append(sum)
+      if sum == 0:
+        divisions.append(1)
+      else:
+        divisions.append(sum)
 
 
 
     fractions = fratctionator(m, divisions)
-    #you can reduce the fraction if necessary by iterating through the numbers from sums.min to 1 and if they and the divisions all mod to 0 you can set them all equal to that mod
 
 
     print(" ")
@@ -43,16 +44,12 @@ def answer(m):
     for i in range(0, len(fractions)):
       numerators.append(fractions[i][0]*common_denominator/fractions[i][1])
 
-     #you should actually build a "probability matrix" in which every non-zero number gets stored as a fraction, then you can iterate through and multiply by a common denominator
-
     print(" ")
 
     print("terminal: ")
     print(terminal)
     print(" ")
 
-    # print("non_termination: ")
-    # print(non_termination)
     print(" ")
     print("divisions: ")
     print(divisions)
@@ -81,7 +78,7 @@ def answer(m):
       if i in terminal:
         result.append(too_many_results[i])
 
-    denominator = common_denominator
+    denominator = common_denominator#I can use reducer to find a common denominator
     result.append(denominator)
     print("Result: ")
 
@@ -98,13 +95,27 @@ def fratctionator(m, divisions):
       #   fractions.append([0,1])
   return fractions
 
+       #you should actually build a "probability matrix" in which every non-zero number gets stored as a fraction, then you can iterate through and multiply by a common denominator
 def probability_matrix(m, divisions, denominator,terminal):
   for i in range(0,len(m)):
     for j in range(0,len(m[i])):
       if m[i][j] != 0:
         m[i][j] = (m[i][j]*denominator)/divisions[i]
+      if (m[i][j] == m[i][i]):
+        if i in terminal:
+          m[i][i]=1
+
     print(m[i])
   return m
+
+def reducer(num_array):
+
+  min(num_array)
+  for i in range(min(num_array), 1):
+    print("you can reduce the fraction if necessary by iterating through the numbers from sums.min to 1 and if they and the divisions all mod to 0 you can set them all equal to that mod ")
+
+
+
 
 
 m = [
