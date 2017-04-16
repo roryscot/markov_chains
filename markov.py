@@ -1,3 +1,4 @@
+
 def answer(m):
     divisions = []
     numerators = []
@@ -23,10 +24,7 @@ def answer(m):
       else:
         divisions.append(sum)
 
-
-
     fractions = fratctionator(m, divisions)
-
 
     print(" ")
     print("divisions: ")
@@ -36,7 +34,6 @@ def answer(m):
     # if not non_termination:
     if True: #adjust and realign whitespace
       for i in divisions:
-        print(i)
         if i != 0:
           common_denominator *= i
 
@@ -103,7 +100,7 @@ def probability_matrix(m, divisions, denominator,terminal):
         m[i][j] = (m[i][j]*denominator)/divisions[i]
       if (m[i][j] == m[i][i]):
         if i in terminal:
-          m[i][i]=1
+          m[i][i]=denominator
 
     print(m[i])
   return m
@@ -137,3 +134,50 @@ n = [
 
 #print(answer(m))
 print(answer(n))
+
+
+def transposeMatrix(m):
+    t = []
+    for r in range(len(m)):
+        tRow = []
+        for c in range(len(m[r])):
+            if c == r:
+                tRow.append(m[r][c])
+            else:
+                tRow.append(m[c][r])
+        t.append(tRow)
+    return t
+
+def getMatrixMinor(m,i,j):
+    return [row[:j] + row[j+1:] for row in (m[:i]+m[i+1:])]
+
+def getMatrixDeternminant(m):
+    #base case for 2x2 matrix
+    if len(m) == 2:
+        return m[0][0]*m[1][1]-m[0][1]*m[1][0]
+
+    determinant = 0
+    for c in range(len(m)):
+        determinant += ((-1)**c)*m[0][c]*getMatrixDeternminant(getMatrixMinor(m,0,c))
+    return determinant
+
+def getMatrixInverse(m):
+    determinant = getMatrixDeternminant(m)
+    #special case for 2x2 matrix:
+    if len(m) == 2:
+        return [[m[1][1]/determinant, -1*m[0][1]/determinant],
+                [-1*m[1][0]/determinant, m[0][0]/determinant]]
+
+    #find matrix of cofactors
+    cofactors = []
+    for r in range(len(m)):
+        cofactorRow = []
+        for c in range(len(m)):
+            minor = getMatrixMinor(m,r,c)
+            cofactorRow.append(((-1)**(r+c)) * getMatrixDeternminant(minor))
+        cofactors.append(cofactorRow)
+    cofactors = transposeMatrix(cofactors)
+    for r in range(len(cofactors)):
+        for c in range(len(cofactors)):
+            cofactors[r][c] = cofactors[r][c]/determinant
+    return cofactors
