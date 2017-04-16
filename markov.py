@@ -1,37 +1,37 @@
 from fractions import Fraction
 
 
-def transposed(m):
+def transposeMatrix(m):
     t = []
     for r in range(len(m)):
-        trans = []
+        tRow = []
         for c in range(len(m[r])):
             if c == r:
-                trans.append(m[r][c])
+                tRow.append(m[r][c])
             else:
-                trans.append(m[c][r])
-        t.append(trans)
-        print(trans)
+                tRow.append(m[c][r])
+        t.append(tRow)
+        print(tRow)
     return t
 
-def minor_finder(m,i,j):
+def getMatrixMinor(m,i,j):
     return [row[:j] + row[j+1:] for row in (m[:i]+m[i+1:])]
 
-def determinator(m):
-    # 2x2 matrix
+def getMatrixDeternminant(m):
+    #base case for 2x2 matrix
     if len(m) == 2:
         return m[0][0]*m[1][1]-m[0][1]*m[1][0]
 
     determinant = 0
-    for a in range(len(m)):
-        determinant += ((-1)**a)*m[0][a]*determinator(minor_finder(m,0,a))
+    for c in range(len(m)):
+        determinant += ((-1)**c)*m[0][c]*getMatrixDeternminant(getMatrixMinor(m,0,c))
     return determinant
 
-def inverser(m):
-    determinant = determinator(m)
+def getMatrixInverse(m):
+    determinant = getMatrixDeternminant(m)
     print("determinant")
     print(Fraction(determinant))
-    #2x2 matrix:
+    #special case for 2x2 matrix:
     if len(m) == 2:
         return [[m[1][1]/determinant, -1*m[0][1]/determinant],
                 [-1*m[1][0]/determinant, m[0][0]/determinant]]
@@ -39,12 +39,12 @@ def inverser(m):
     #find matrix of cofactors
     cofactors = []
     for r in range(len(m)):
-        co_row = []
+        cofactorRow = []
         for c in range(len(m)):
-            minor = minor_finder(m,r,c)
-            co_row.append(((-1)**(r+c)) * determinator(minor))
-        cofactors.append(co_row)
-    cofactors = transposed(cofactors)
+            minor = getMatrixMinor(m,r,c)
+            cofactorRow.append(((-1)**(r+c)) * getMatrixDeternminant(minor))
+        cofactors.append(cofactorRow)
+    cofactors = transposeMatrix(cofactors)
     for r in range(len(cofactors)):
         for c in range(len(cofactors)):
             cofactors[r][c] = cofactors[r][c]/determinant
@@ -58,7 +58,7 @@ def inverser(m):
 #   return new_m
 
 #print(matrix_subtraction(identity_matrix(q),q))
-#sample = inverser(matrix_subtraction(identity_matrix(q),q))
+#sample = getMatrixInverse(matrix_subtraction(identity_matrix(q),q))
 #print(sample)
 #print(" ")
 # print(fraction_converter(sample))
@@ -142,7 +142,7 @@ def answer(m):
     # result.append(denominator)
     print("Result: ")
     i_q = matrix_subtraction(identity_matrix(m), probs)
-    result = matrix_multiplier(inverser(i_q),r)
+    result = matrix_multiplier(getMatrixInverse(i_q),r)
     return result
 
 def q_finder(m, terminal):
@@ -251,10 +251,26 @@ def matrix_subtraction(identity,m):
     print(row)
   return result
 
-def matrix_multiplier(left,right):
-  return right
+# def matrix_multiplier(left,right):
+#   return right
 
+def matrix_multiplier(a,b):
+  result = []
+  for i in range(0,len(a)):
+    row = []
+    for j in range(0, len(a)):
+      row.append(0)
+    result.append(row)
 
+  for i in range(len(a)):
+   for j in range(len(b[0])):
+       for k in range(len(b)):
+           result[i][j] += a[i][k] * b[k][j]
+
+  for i in result:
+    print(i)
+
+  return result
 
 
 #print(answer(m))
