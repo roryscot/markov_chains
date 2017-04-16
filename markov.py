@@ -6,7 +6,6 @@ def answer(m):
     result = []
     terminal = []
     too_many_results = []
-    # non_termination = []
 
     for i in range(0,len(m)):
       sum = 0
@@ -14,9 +13,6 @@ def answer(m):
       print(m[i])
       too_many_results.append(0)
       for j in range(0,len(m[i])):
-        # if m[i][j]>0 and m[j][i]>0:
-          # if [j,i] not in non_termination:
-          #   non_termination.append([i,j])
         sum += m[i][j]
       if sum == 0:
         terminal.append(i)
@@ -32,7 +28,6 @@ def answer(m):
     print(divisions)
 
     common_denominator = 1
-    # if not non_termination:
     if True: #adjust and realign whitespace
       for i in divisions:
         if i != 0:
@@ -64,10 +59,12 @@ def answer(m):
     print("fractions:")
     print(fractions)
     print("probability_matrix:")
-    probability_matrix(m,divisions,common_denominator,terminal)
+    probs = probability_matrix(m,divisions,common_denominator,terminal)
     print(" ")
 
-    #I'm going to have to draw from "too_many_results" at the end in order to refer to each terminating state by it's position. Then can append them to result, which will omit the transitional values from "result".
+    print("q = ")
+    print(q_finder(probs, terminal))
+
 
     for i in range(0, len(too_many_results)):
       if i in terminal:
@@ -78,6 +75,18 @@ def answer(m):
     print("Result: ")
 
     return result
+
+def q_finder(m, terminal):
+  q = []
+  t = len(m)-len(terminal)
+  for i in range(0,t):
+    row = []
+    for j in range(0,t):
+      row.append(m[i][j])
+    q.append(row)
+    print(row)
+  return q
+
 
 
 def fratctionator(m, divisions):
@@ -167,7 +176,7 @@ def matrix_subtraction(identity,m):
 
 
 #print(answer(m))
-#print(answer(n))
+print(answer(n))
 
 
 def transposeMatrix(m):
@@ -226,8 +235,8 @@ def getMatrixInverse(m):
 #       new_m.append(Fraction(m[i][j]))
 #   return new_m
 
-print(matrix_subtraction(identity_matrix(q),q))
-sample = getMatrixInverse(matrix_subtraction(identity_matrix(q),q))
-print(sample)
-print(" ")
+#print(matrix_subtraction(identity_matrix(q),q))
+#sample = getMatrixInverse(matrix_subtraction(identity_matrix(q),q))
+#print(sample)
+#print(" ")
 # print(fraction_converter(sample))
