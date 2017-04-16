@@ -64,7 +64,8 @@ def answer(m):
 
     print("q = ")
     print(q_finder(probs, terminal))
-
+    print("r = ")
+    print(r_finder(probs, terminal))
 
     for i in range(0, len(too_many_results)):
       if i in terminal:
@@ -86,6 +87,17 @@ def q_finder(m, terminal):
     q.append(row)
     print(row)
   return q
+
+def r_finder(m,terminal):
+  r = []
+  t = len(m)-len(terminal)
+  for i in range(t,len(m)):
+    row = []
+    for j in range(t,len(m)):
+      row.append(m[i][j])
+    r.append(row)
+    print(row)
+  return r
 
 
 
