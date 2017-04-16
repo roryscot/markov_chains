@@ -1,3 +1,4 @@
+from fractions import Fraction
 
 def answer(m):
     divisions = []
@@ -66,9 +67,6 @@ def answer(m):
     probability_matrix(m,divisions,common_denominator,terminal)
     print(" ")
 
-
-
-
     #I'm going to have to draw from "too_many_results" at the end in order to refer to each terminating state by it's position. Then can append them to result, which will omit the transitional values from "result".
 
     for i in range(0, len(too_many_results)):
@@ -131,9 +129,14 @@ n = [
   [0, 0, 0, 0, 0, 0]
   ]
 q = [
-  [0,1/2],
-  [4/9,0],
+  [0, 1.0/2],
+  [ (4.0/9),0],
   ]
+
+# q = [
+#   [0, 9],
+#   [ 8 ,0],
+#   ]
 
 
 def identity_matrix(m):
@@ -149,7 +152,17 @@ def identity_matrix(m):
     print(row)
   return identity
 
-def matrix_subtraction(m, identity):
+def matrix_subtraction(identity,m):
+  result = []
+  for i in range(0,len(m)):
+    row = []
+    for j in range(0,len(m)):
+      print(m[i][j])
+      row.append(identity[i][j]-m[i][j])
+    result.append(row)
+    print(row)
+  return result
+
 
 
 
@@ -185,7 +198,8 @@ def getMatrixDeternminant(m):
 
 def getMatrixInverse(m):
     determinant = getMatrixDeternminant(m)
-    print(determinant)
+    print("determinant")
+    print(Fraction(determinant))
     #special case for 2x2 matrix:
     if len(m) == 2:
         return [[m[1][1]/determinant, -1*m[0][1]/determinant],
@@ -205,4 +219,15 @@ def getMatrixInverse(m):
             cofactors[r][c] = cofactors[r][c]/determinant
     return cofactors
 
-print(identity_matrix(q))
+# def fraction_converter(m):
+#   new_m = []
+#   for i in range(0,len(m)):
+#     for j in range(0,len(m)):
+#       new_m.append(Fraction(m[i][j]))
+#   return new_m
+
+print(matrix_subtraction(identity_matrix(q),q))
+sample = getMatrixInverse(matrix_subtraction(identity_matrix(q),q))
+print(sample)
+print(" ")
+# print(fraction_converter(sample))
