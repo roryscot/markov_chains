@@ -34,7 +34,6 @@ def getMatrixDeternminant(m):
 def getMatrixInverse(m):
     determinant = getMatrixDeternminant(m)
     print("determinant")
-    #print(Fraction(determinant))
     print(determinant)
     #special case for 2x2 matrix:
     if len(m) == 2:
@@ -63,6 +62,9 @@ def answer(m):
     terminal = []
     too_many_results = []
 
+    if len(m) == 1:
+      return [1]
+
     for i in range(0,len(m)):
       sum = 0
       count = 0
@@ -80,9 +82,8 @@ def answer(m):
     fractions = fratctionator(m, divisions)
 
     common_denominator = 1
-    if True: #adjust and realign whitespace
-      for i in divisions:
-        if i != 0:
+    for i in divisions:
+      if i != 0:
           common_denominator *= i
 
 
@@ -167,7 +168,6 @@ def r_finder(m,terminal):
     for j in range(t,len(m)):
       row.append(m[i][j])
     r.append(row)
-    #print(row)
   return r
 
 
@@ -183,11 +183,9 @@ def probability_matrix(m, divisions, denominator,terminal):
   for i in range(0,len(m)):
     for j in range(0,len(m[i])):
       if m[i][j] != 0:
-        #m[i][j] = (m[i][j]*denominator)/divisions[i]
         m[i][j] = (m[i][j])/float(divisions[i])
       if (m[i][j] == m[i][i]):
         if i in terminal:
-          #m[i][i]=denominator
           m[i][i]=1
 
     print(m[i])
