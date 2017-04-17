@@ -118,6 +118,13 @@ def answer(m):
 
     print("q = ")
     q = q_finder(probs, terminal)
+    print("q checker")
+    print(q_checker(q))
+    print(" ")
+    if q_checker(q)==0:
+      # return matrix_fractionator(m)
+      numerators.append(common_denominator)
+      return (numerators)
 
     print(" ")
     print("r = ")
@@ -159,6 +166,15 @@ def q_finder(m, terminal):
     q.append(row)
     print(row)
   return q
+
+def q_checker(m):
+  sum = 0
+  for i in range(len(m)):
+    for j in range(len(m)):
+      sum += m[i][j]
+  return sum
+
+
 
 def r_finder(m,terminal):
   r = []
@@ -268,5 +284,15 @@ n = [
   [0, 0, 0, 0, 0, 0]
   ]
 
-print(answer(m))
+o = [
+  [0, 1, 0, 0, 0, 1],
+  [0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0]
+  ]
+
+#print(answer(m))
 #print(answer(n))
+print(answer(o))
