@@ -148,10 +148,10 @@ def answer(m):
     #order matters in matrix_multiplier
     answer_matrix = matrix_multiplier(inverse,r)
 
-    result = 1
+    result = matrix_fractionator(matrix_multiplier(inverse,r))
 
 
-    return "Still need to get probabilities from the above matrix"
+    return result
 
 def q_finder(m, terminal):
   q = []
@@ -240,6 +240,24 @@ def matrix_multiplier(a,b):
     print(i)
 
   return result
+
+def matrix_fractionator(m):
+  pairs= []
+  denominators=[]
+  result=[]
+
+  for j in m[0]:
+    pairs.append([Fraction(j).limit_denominator().numerator,Fraction(j).limit_denominator().denominator])
+    denominators.append(Fraction(j).limit_denominator().denominator)
+  greatest_cd=max(denominators)
+
+  for i in denominators:
+    if greatest_cd%i == 0:
+      continue
+  for i in pairs:
+    result.append(i[0])
+  result.append(greatest_cd)
+  return(result)
 
 m = [
   [0, 2, 1, 0, 0],
