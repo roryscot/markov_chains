@@ -30,7 +30,8 @@ def getMatrixDeternminant(m):
 def getMatrixInverse(m):
     determinant = getMatrixDeternminant(m)
     print("determinant")
-    print(Fraction(determinant))
+    #print(Fraction(determinant))
+    print(determinant)
     #special case for 2x2 matrix:
     if len(m) == 2:
         return [[m[1][1]/determinant, -1*m[0][1]/determinant],
@@ -140,9 +141,23 @@ def answer(m):
 
     # denominator = common_denominator#I can use reducer to find a common denominator
     # result.append(denominator)
+
+    print(" ")
+    i_q = matrix_subtraction(identity_matrix(m,q), q)
+    print("I-Q")
+    for i in i_q:
+      print(i)
+
+    inverse = getMatrixInverse(i_q)
+    print(" ")
+    print("inverted")
+
+    for i in inverse:
+      print(i)
+
+    result = matrix_multiplier(inverse,r)
+
     print("Result: ")
-    i_q = matrix_subtraction(identity_matrix(m), probs)
-    result = matrix_multiplier(getMatrixInverse(i_q),r)
     return result
 
 def q_finder(m, terminal):
@@ -159,7 +174,7 @@ def q_finder(m, terminal):
 def r_finder(m,terminal):
   r = []
   t = len(m)-len(terminal)
-  for i in range(t,len(m)):
+  for i in range(0,t):
     row = []
     for j in range(t,len(m)):
       row.append(m[i][j])
@@ -175,31 +190,21 @@ def fratctionator(m, divisions):
     for j in range(0,len(m[i])):
       if m[i][j] != 0:
         fractions.append([m[i][j],divisions[i]])
-      # else:
-      #   fractions.append([0,1])
   return fractions
 
-       #you should actually build a "probability matrix" in which every non-zero number gets stored as a fraction, then you can iterate through and multiply by a common denominator
 def probability_matrix(m, divisions, denominator,terminal):
   for i in range(0,len(m)):
     for j in range(0,len(m[i])):
       if m[i][j] != 0:
-        m[i][j] = (m[i][j]*denominator)/divisions[i]
+        #m[i][j] = (m[i][j]*denominator)/divisions[i]
+        m[i][j] = (m[i][j])/float(divisions[i])
       if (m[i][j] == m[i][i]):
         if i in terminal:
-          m[i][i]=denominator
+          #m[i][i]=denominator
+          m[i][i]=1
 
     print(m[i])
   return m
-
-# def reducer(num_array):
-#   min(num_array)
-#   for i in range(min(num_array), 1):
-#     print("you can reduce the fraction if necessary by iterating through the numbers from sums.min to 1 and if they and the divisions all mod to 0 you can set them all equal to that mod ")
-
-
-
-
 
 m = [
   [0, 2, 1, 0, 0],
@@ -216,28 +221,18 @@ n = [
   [0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0]
   ]
-q = [
-  [0, 1.0/2],
-  [ (4.0/9),0],
-  ]
 
-# q = [
-#   [0, 9],
-#   [ 8 ,0],
-#   ]
-
-
-def identity_matrix(m):
+def identity_matrix(m,q):
   identity = []
-  for i in range(0,len(m)):
+  for i in range(0,len(q)):
     row = []
-    for j in range(0,len(m)):
+    for j in range(0,len(q)):
       if (i == j ):
         row.append(1)
       else:
         row.append(0)
     identity.append(row)
-    print(row)
+    #print(row)
   return identity
 
 def matrix_subtraction(identity,m):
@@ -245,14 +240,12 @@ def matrix_subtraction(identity,m):
   for i in range(0,len(m)):
     row = []
     for j in range(0,len(m)):
-      print(m[i][j])
+      #print(m[i][j])
       row.append(identity[i][j]-m[i][j])
     result.append(row)
-    print(row)
+    #print(row)
   return result
 
-# def matrix_multiplier(left,right):
-#   return right
 
 def matrix_multiplier(a,b):
   result = []
