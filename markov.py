@@ -1,5 +1,9 @@
-from fractions import Fraction
+from fractions import Fraction, gcd
 
+#retry with integer probability matrix
+#try to maintain fractions throughout
+      #.limit_denominator
+#try reverting back to using denominator but with identity_matrix
 
 def transposeMatrix(m):
     t = []
@@ -51,19 +55,6 @@ def getMatrixInverse(m):
             cofactors[r][c] = cofactors[r][c]/determinant
     return cofactors
 
-# def fraction_converter(m):
-#   new_m = []
-#   for i in range(0,len(m)):
-#     for j in range(0,len(m)):
-#       new_m.append(Fraction(m[i][j]))
-#   return new_m
-
-#print(matrix_subtraction(identity_matrix(q),q))
-#sample = getMatrixInverse(matrix_subtraction(identity_matrix(q),q))
-#print(sample)
-#print(" ")
-# print(fraction_converter(sample))
-
 
 def answer(m):
     divisions = []
@@ -88,10 +79,6 @@ def answer(m):
 
     fractions = fratctionator(m, divisions)
 
-    print(" ")
-    print("divisions: ")
-    print(divisions)
-
     common_denominator = 1
     if True: #adjust and realign whitespace
       for i in divisions:
@@ -108,7 +95,6 @@ def answer(m):
     print(terminal)
     print(" ")
 
-    print(" ")
     print("divisions: ")
     print(divisions)
     print(" ")
@@ -123,21 +109,24 @@ def answer(m):
 
     print("fractions:")
     print(fractions)
+    print(" ")
+
     print("probability_matrix:")
     probs = probability_matrix(m,divisions,common_denominator,terminal)
     print(" ")
 
     print("q = ")
     q = q_finder(probs, terminal)
-    print(q)
 
+    print(" ")
     print("r = ")
     r = r_finder(probs, terminal)
-    print(r)
+    for row in r:
+      print(row)
 
-    for i in range(0, len(too_many_results)):
-      if i in terminal:
-        result.append(too_many_results[i])
+    # for i in range(0, len(too_many_results)):
+    #   if i in terminal:
+    #     result.append(too_many_results[i])
 
     # denominator = common_denominator#I can use reducer to find a common denominator
     # result.append(denominator)
@@ -150,15 +139,19 @@ def answer(m):
 
     inverse = getMatrixInverse(i_q)
     print(" ")
-    print("inverted")
-
+    print("I - Q inverted")
     for i in inverse:
       print(i)
 
-    result = matrix_multiplier(inverse,r)
+    print(" ")
+    print("(I - Q)^-1 (R): ")
+    #order matters in matrix_multiplier
+    answer_matrix = matrix_multiplier(inverse,r)
 
-    print("Result: ")
-    return result
+    result = 1
+
+
+    return "Still need to get probabilities from the above matrix"
 
 def q_finder(m, terminal):
   q = []
@@ -179,9 +172,8 @@ def r_finder(m,terminal):
     for j in range(t,len(m)):
       row.append(m[i][j])
     r.append(row)
-    print(row)
+    #print(row)
   return r
-
 
 
 def fratctionator(m, divisions):
@@ -205,22 +197,6 @@ def probability_matrix(m, divisions, denominator,terminal):
 
     print(m[i])
   return m
-
-m = [
-  [0, 2, 1, 0, 0],
-  [0, 0, 0, 3, 4],
-  [0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0]
-  ]
-n = [
-  [0, 1, 0, 0, 0, 1],
-  [4, 0, 0, 3, 2, 0],
-  [0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0]
-  ]
 
 def identity_matrix(m,q):
   identity = []
@@ -251,7 +227,7 @@ def matrix_multiplier(a,b):
   result = []
   for i in range(0,len(a)):
     row = []
-    for j in range(0, len(a)):
+    for j in range(0, len(b[0])):
       row.append(0)
     result.append(row)
 
@@ -265,6 +241,21 @@ def matrix_multiplier(a,b):
 
   return result
 
+m = [
+  [0, 2, 1, 0, 0],
+  [0, 0, 0, 3, 4],
+  [0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0]
+  ]
+n = [
+  [0, 1, 0, 0, 0, 1],
+  [4, 0, 0, 3, 2, 0],
+  [0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0]
+  ]
 
 #print(answer(m))
 print(answer(n))
