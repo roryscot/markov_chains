@@ -139,6 +139,10 @@ def answer(m):
     for i in i_q:
       print(i)
 
+    if getMatrixDeternminant(i_q)==0: 
+      numerators.append(common_denominator)
+      return (numerators)
+
     inverse = getMatrixInverse(i_q)
     print(" ")
     print("I - Q inverted")
