@@ -1,4 +1,4 @@
-from fractions import Fraction, gcd
+from fractions import Fraction
 
 #retry with integer probability matrix
 #try to maintain fractions throughout
@@ -124,12 +124,6 @@ def answer(m):
     for row in r:
       print(row)
 
-    # for i in range(0, len(too_many_results)):
-    #   if i in terminal:
-    #     result.append(too_many_results[i])
-
-    # denominator = common_denominator#I can use reducer to find a common denominator
-    # result.append(denominator)
 
     print(" ")
     i_q = matrix_subtraction(identity_matrix(m,q), q)
@@ -150,7 +144,8 @@ def answer(m):
 
     result = matrix_fractionator(matrix_multiplier(inverse,r))
 
-
+    print(" ")
+    print("Result: ")
     return result
 
 def q_finder(m, terminal):
@@ -251,10 +246,10 @@ def matrix_fractionator(m):
     denominators.append(Fraction(j).limit_denominator().denominator)
   greatest_cd=max(denominators)
 
-  for i in denominators:
-    if greatest_cd%i == 0:
-      continue
   for i in pairs:
+    if greatest_cd%i[1] == 0:
+      if greatest_cd!=i[1]:
+        i[0]*=(greatest_cd/i[1])
     result.append(i[0])
   result.append(greatest_cd)
   return(result)
@@ -275,5 +270,5 @@ n = [
   [0, 0, 0, 0, 0, 0]
   ]
 
-#print(answer(m))
-print(answer(n))
+print(answer(m))
+#print(answer(n))
