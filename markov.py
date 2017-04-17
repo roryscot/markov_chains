@@ -122,9 +122,10 @@ def answer(m):
     print(q_checker(q))
     print(" ")
     if q_checker(q)==0:
-      # return matrix_fractionator(m)
-      numerators.append(common_denominator)
-      return (numerators)
+      result = matrix_fractionator(m)
+      print(len(result))
+      print(len(terminal))
+      return result[len(result)-(len(terminal)+1):]
 
     print(" ")
     print("r = ")
@@ -139,7 +140,7 @@ def answer(m):
     for i in i_q:
       print(i)
 
-    if getMatrixDeternminant(i_q)==0: 
+    if getMatrixDeternminant(i_q)==0:
       numerators.append(common_denominator)
       return (numerators)
 
