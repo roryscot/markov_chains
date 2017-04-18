@@ -71,8 +71,10 @@ def answer(m):
         sum += m[i][j]
       if sum == 0:
         terminal.append(i)
+        ### added
       if sum == 1 and m[i][i] == 1:
         terminal.append(i)
+        ###
       if sum == 0:
         divisions.append(1)
       else:
@@ -117,14 +119,23 @@ def answer(m):
 
     print("q = ")
     q = q_finder(probs, terminal)
+    idm = identity_matrix(m,q)
+    print("IDM")
+    print(idm)
+    print(q == idm)
     print("q checker")
     print(q_checker(q))
     print(" ")
-    if q_checker(q)==0:
+    if q_checker(q)==0 or q == idm:
       result = matrix_fractionator(m)
       print(len(result))
       print(len(terminal))
-      return result[len(result)-(len(terminal)+1):]
+      print("FRACTIONATOR")
+      print result
+      if q == idm:
+        return result[len(result)-(len(terminal)+2):]
+      else:
+        return result[len(result)-(len(terminal)+1):]
 
     print(" ")
     print("r = ")
@@ -138,10 +149,15 @@ def answer(m):
     print("I-Q")
     for i in i_q:
       print(i)
-
+    #
+    # placeholder
+    #
     if getMatrixDeternminant(i_q)==0:
-      numerators.append(common_denominator)
-      return (numerators)
+      # numerators.append(common_denominator)
+      # return (numerators)
+      result = matrix_fractionator(m)
+      return result[len(result)-(len(terminal)+1):]
+
 
     inverse = getMatrixInverse(i_q)
     print(" ")
@@ -221,7 +237,13 @@ def identity_matrix(m,q):
       else:
         row.append(0)
     identity.append(row)
-    #print(row)
+
+    print("identity")
+    print(row)
+  print("identity[0]")
+  identity[0][0]=float(identity[0][0])
+  print(identity[0][0])
+
   return identity
 
 def matrix_subtraction(identity,m):
@@ -296,7 +318,68 @@ o = [
   [0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0]
   ]
+testtttt=[
+  [0, 0, 1, 2],
+  [0, 0, 1, 1],
+  [0, 0, 0, 0],
+  [0, 0, 0, 0],
+  ]#=> [1,2,3]?
+testtttt2=[
+  [0, 0, 1, 2],
+  [0, 0, 1, 1],
+  [0, 0, 1, 1],
+  [0, 0, 0, 0],
+  ]#=> [1,1]?
+testtttt3=[
+  [0, 0, 1, 2, 0],
+  [0, 0, 1, 1, 0],
+  [0, 0, 1, 1, 1],
+  [0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0],
+  ]#=> [1,1]?
+testtttt4=[
+  [0, 0, 1, 2, 0],
+  [0, 0, 1, 1, 1],
+  [0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0],
+  ]#=> [1,2,0,3]?
+testtttt5=[
+  [0, 0, 1, 2],
+  [0, 0, 1, 3],
+  [0, 0, 0, 0],
+  [0, 0, 0, 0],
+  ]#=> [0,1,2,3]?
+testtttt6=[
+  [0, 0, 0, 0, 0, 4, 3, 2, 1],
+  [0, 0, 0, 0, 0, 1, 0, 0, 0],
+  [0, 0, 0, 0, 0, 5, 2, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 1],
+  [0, 0, 0, 0, 0, 1, 0, 0, 0],
+  [0, 1, 0, 0, 0, 4, 0, 7, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  #[0, 0, 0, 0, 0, 0, 0, 0, 0],
+  ]
+
+testtttt7=[
+  [1,0],[0,0]
+  ]
+
+testtttt8 =  [
+  [5,0],[0,0]
+  ]
+
+
 
 #print(answer(m))
 #print(answer(n))
-print(answer(o))
+#print(answer(o))
+#print(answer(testtttt4))
+print(answer(testtttt8))
+
+#example = [[1,0,2,3],[0,1,1,1],[0,0,0,0],[0,0,0,0]]
+
+#print(getMatrixDeternminant(this_thing))
+#print(answer(example))
+#print(answer(testtttt6))
