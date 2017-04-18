@@ -62,9 +62,6 @@ def answer(m):
     terminal = []
     too_many_results = []
 
-    if len(m) == 1:
-      return [1]
-
     for i in range(0,len(m)):
       sum = 0
       count = 0
@@ -73,6 +70,8 @@ def answer(m):
       for j in range(0,len(m[i])):
         sum += m[i][j]
       if sum == 0:
+        terminal.append(i)
+      if sum == 1 and m[i][i] == 1:
         terminal.append(i)
       if sum == 0:
         divisions.append(1)
