@@ -3,15 +3,25 @@ from fractions import Fraction
 def answer(m):
   result = []
 
+  #----Initial Info------
   terminals = terminal_finder(m)
   divisions = divisions_of(m)
-  working_order = reorder
+  common_denominator = common_denominator_finder(divisions)
   fractions = fratctionator(m, divisions)
+
+  mapped_order = reorder(m,terminals)
+  working_order = reordered_matrix(mapped_order)
+
+  #-------Probability Matrix
+  probabilities = probability_matrix(working_order, divisions, common_denominator, terminals)
 
   #print(terminals)
   #print(divisions)
-  #print(working_order(m,terminals))
+  #print(common_denominator)
+  print(mapped_order)
+  #print(working_order)
   #print(fractions)
+
 
 
 
@@ -25,7 +35,6 @@ def answer(m):
 
 def terminal_finder(m):
   terminal = []
-  divisions = []
 
   for i in range(0,len(m)):
     sum = 0
@@ -33,10 +42,6 @@ def terminal_finder(m):
       sum += m[i][j]
     if sum == 0 or (m[i][i] == sum) and (i not in terminal):
       terminal.append(i)
-    if sum == 0:
-      divisions.append(1)
-    else:
-      divisions.append(sum)
 
   for i in range(1,len(m)):
     default_terminal = 0
@@ -50,7 +55,7 @@ def terminal_finder(m):
 
   return terminal
 
-          #------
+          ##########
 
 def divisions_of(m):
   divisions = []
@@ -65,6 +70,19 @@ def divisions_of(m):
       divisions.append(sum)
   return divisions
 
+          ##########
+
+def common_denominator_finder(array):
+  common_denominator = 1
+  for i in array:
+    if i != 0:
+        common_denominator *= i
+  return common_denominator
+
+
+          ##########
+
+
 def reorder(m,terminal):
   reordered = []
   for i in range(len(m)):
@@ -76,7 +94,18 @@ def reorder(m,terminal):
 
   return reordered
 
-        #------
+          ##########
+
+def reordered_matrix(mapped_order):
+  print("reordered_matrix: ")
+  working_order = []
+  for i in range(len(mapped_order)):
+    working_order.append(mapped_order[i][1])
+    print(working_order[i])
+  print(" ")
+  return working_order
+
+          ##########
 
 def fratctionator(m, divisions):
   fractions = []
@@ -90,6 +119,8 @@ def fratctionator(m, divisions):
       #This should examine the reordered matrix so that it give a standard form
 
 def probability_matrix(m, divisions, denominator,terminal):
+  print("probability_matrix: ")
+  ###These values are altered, which changes the mapped_order as well
   for i in range(0,len(m)):
     for j in range(0,len(m[i])):
       if m[i][j] != 0:
@@ -99,6 +130,7 @@ def probability_matrix(m, divisions, denominator,terminal):
           m[i][i]=1
 
     print(m[i])
+  print(" ")
   return m
 
 #============Matrix Quadrants =================
@@ -122,7 +154,7 @@ def q_checker(m):
   return sum
 
 
-      #------
+          ##########
 
 
 def r_finder(m,terminal):
@@ -149,7 +181,7 @@ def transposeMatrix(m):
         print(tRow)
     return t
 
-    #------
+          ##########
 
 
 def getMatrixMinor(m,i,j):
@@ -166,7 +198,7 @@ def getMatrixDeternminant(m):
     return determinant
 
 
-    #------
+          ##########
 
 
 def getMatrixInverse(m):
@@ -312,7 +344,7 @@ print(answer(m))
 #print(answer(o))
 #print(answer(testtttt4))
 #print(answer(testtttt10))
-#print(answer(mikes))
+print(answer(mikes))
 
 #example = [[1,0,2,3],[0,1,1,1],[0,0,0,0],[0,0,0,0]]
 
