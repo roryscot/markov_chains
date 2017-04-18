@@ -79,6 +79,16 @@ def answer(m):
       else:
         divisions.append(sum)
 
+    for i in range(1,len(m)):
+      default_terminal = 0
+      j = 0
+      if i not in terminal:
+        if m[i][j] == 0:
+          default_terminal += 1
+        if default_terminal == len(m):
+          terminal.append(i)
+      j+=1
+
 
     fractions = fratctionator(m, divisions)
 

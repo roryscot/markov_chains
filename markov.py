@@ -62,6 +62,8 @@ def answer(m):
     terminal = []
     too_many_results = []
 
+
+
     for i in range(0,len(m)):
       sum = 0
       count = 0
@@ -69,16 +71,46 @@ def answer(m):
       too_many_results.append(0)
       for j in range(0,len(m[i])):
         sum += m[i][j]
-      if sum == 0:
+      print(m[i][i] == sum)
+      print("This is crazy")
+      print([m[i][i],sum])
+
+      if sum == 0 or (m[i][i] == sum) and (i not in terminal):
         terminal.append(i)
-        ### added
-      if sum == 1 and m[i][i] == 1:
-        terminal.append(i)
-        ###
       if sum == 0:
         divisions.append(1)
       else:
         divisions.append(sum)
+
+    for i in range(1,len(m)):
+      default_terminal = 0
+      j = 0
+      if i not in terminal:
+        if m[i][j] == 0:
+          default_terminal += 1
+        if default_terminal == len(m):
+          terminal.append(i)
+      j+=1
+
+
+
+
+
+
+    # for i in range(0,len(m)):
+    #   default_terminal = 0
+    #   j = 0
+    #   if i not in terminal:
+    #       if m[i][j] == 0:
+    #         default_terminal += 1
+    #   j+=1
+    #       #terminal.append(i)
+
+
+
+
+
+
 
     fractions = fratctionator(m, divisions)
 
@@ -155,7 +187,32 @@ def answer(m):
     if getMatrixDeternminant(i_q)==0:
       # numerators.append(common_denominator)
       # return (numerators)
+
+      print("HEERRERERERE!!!!!!!!!!!!!!!")
+
+
+      # for i in range(0,len(m)):
+      #   if i not in terminal:
+      #     if m[0][i] == 0 and i != 0:
+      #       terminal.append(i)
+
+
       result = matrix_fractionator(m)
+      print("Result = ")
+      print(result)
+
+
+      if q == idm:
+        return result[len(result)-(len(terminal)+2):]
+      else:
+        return result[len(result)-(len(terminal)+1):]
+
+
+
+      print("Result = ")
+      print(result)
+
+      result.append(1)
       return result[len(result)-(len(terminal)+1):]
 
 
@@ -171,6 +228,7 @@ def answer(m):
     answer_matrix = matrix_multiplier(inverse,r)
 
     result = matrix_fractionator(matrix_multiplier(inverse,r))
+
 
     print(" ")
     print("Result: ")
@@ -370,13 +428,47 @@ testtttt8 =  [
   [5,0],[0,0]
   ]
 
+testtttt9=[
+  [0, 1, 2],
+  [4, 3, 2],
+  [0, 0, 0],
+]
+
+testtttt10=[
+[0,0,5],
+[0,0,1],
+[0,0,5]
+]
+
+testtttt11=[
+[0,0,5],
+[0,0,0],
+[0,0,5]
+]
+
+testtttt12=[
+[0,0,5],
+[0,0,0],
+[0,0,0]
+]
+
+mikes=[
+[0,1,1,0,0,2],
+[1,0,0,3,0,0],
+[0,1,0,0,1,0],
+[0,0,0,0,0,0],
+[0,0,0,0,0,0],
+[0,0,0,0,0,0]
+]
+
 
 
 #print(answer(m))
 #print(answer(n))
 #print(answer(o))
 #print(answer(testtttt4))
-print(answer(testtttt8))
+print(answer(testtttt10))
+#print(answer(mikes))
 
 #example = [[1,0,2,3],[0,1,1,1],[0,0,0,0],[0,0,0,0]]
 
