@@ -1,17 +1,9 @@
 from fractions import Fraction
+import fractions
 
 def answer(m):
   if len(m)==1:
     return [1,1]
-  result = []
-
-
-  print("Original Matrix: ")
-  for i in m:
-    print(i)
-  print(" ")
-
-
  #----Initial Info------
   terminals = terminal_finder(m)
   divisions = divisions_of(m)
@@ -34,12 +26,18 @@ def answer(m):
   probabilities = probability_matrix(working_order, reordered_divisions, common_denominator, terminals)
   #Find Q
   q = q_finder(probabilities,terminals)
+
+
   #Set Identity Matrix
   idm = identity_matrix(m,q)
+
+
   #Find R
   r = r_finder(probabilities,terminals)
   #Find I-Q
   i_q = matrix_subtraction(idm, q)
+
+
   #Get inversion
   inverse = getMatrixInverse(i_q)
   #multiply by R
@@ -47,46 +45,7 @@ def answer(m):
   #convert to fractions
   translated_resultant_matrix = matrix_fractionator(resultant_matrix)
 
-
-
-
-
-
-  #print(terminals)
-  # print(divisions)
-  # print(common_denominator)
-  #print(mapped_order)
-  #print(working_order)
-  #print(fractions)
-  print("probability_matrix: ")
-  for i in probabilities:
-    print(i)
-  print("q ")
-  print(q)
-  print(" ")
-  print(idm)
-  print(" ")
-  print("R ")
-  print(r)
-  print(" ")
-  print("I-Q ")
-  print(i_q)
-  print(" ")
-  print("inverse")
-  print(inverse)
-  print(" ")
-  print("resultant_matrix")
-  print(resultant_matrix)
-  print(" ")
-  print("fractionated")
-  print(translated_resultant_matrix)
-  print(" ")
-
-
-
-
-
-  return result
+  return translated_resultant_matrix
 
 
 
@@ -159,12 +118,9 @@ def mapper(m,terminal):
           ##########
 
 def reordered_rows(mapped_order):
-  # print("reordered_matrix: ")
   working_order = []
   for i in range(len(mapped_order)):
     working_order.append(mapped_order[i][1])
-    # print(working_order[i])
-  # print(" ")
   return working_order
 
           ##########
@@ -181,36 +137,28 @@ def fratctionator(m, divisions):
 
 def column_sorter(m,m_prime,order):
   #this depends on the number of terminals being right
-  print("columns switched")
   new = []
   for i in range(len(m)):
     row = []
     for j in range(len(m)):
       row.append(m[i][order[j]])
-      #print(row)
     new.append(row)
-    print(new[i])
   return new
 
           ##########
 
 def find_reference_order(mapp):
   new = []
-  # print("new order: ")
   for i in range(len(mapp)):
     new.append(mapp[i][0])
-    # print(i)
-  # print(" ")
   return new
 
           ##########
 
 def make_working_order(m,order):
-  print("working_orderer: ")
   working_orderer = []
   for i in range(len(order)):
     working_orderer.append(m[order[i]])
-    print(working_orderer[i])
   return working_orderer
 
 
@@ -237,9 +185,6 @@ def probability_matrix(m, divisions, denominator,terminal):
     for j in range(0,len(m[i])):
       if m[i][j] != 0:
         row.append((m[i][j])/float(divisions[i]))
-      # elif (m[i][j] == m[i][i]):
-      #   if i in terminal:
-          # row.append(1)
       else:
         row.append(0)
     probs.append(row)
@@ -259,7 +204,6 @@ def q_finder(m, terminal):
     for j in range(0,t):
       row.append(m[i][j])
     q.append(row)
-    print(row)
   return q
 
 def q_checker(m):
@@ -308,10 +252,8 @@ def matrix_subtraction(identity,m):
   for i in range(0,len(m)):
     row = []
     for j in range(0,len(m)):
-      #print(m[i][j])
       row.append(identity[i][j]-m[i][j])
     result.append(row)
-    #print(row)
   return result
 
           ##########
@@ -330,9 +272,6 @@ def matrix_multiplier(a,b):
        for k in range(len(b)):
            result[i][j] += a[i][k] * b[k][j]
 
-  for i in result:
-    print(i)
-
   return result
 
           ##########
@@ -345,17 +284,21 @@ def matrix_fractionator(m):
   for j in m[0]:
     pairs.append([Fraction(j).limit_denominator().numerator,Fraction(j).limit_denominator().denominator])
     denominators.append(Fraction(j).limit_denominator().denominator)
-  greatest_cd=max(denominators)
+
+  lcm = 1
+  for i in range(len(denominators)-1):
+    lcm = lcmer(lcmer(denominators[i],denominators[i+1]),lcm)
+
+  print(pairs)
+  print(denominators)
 
   for i in pairs:
-    if greatest_cd%i[1] == 0:
-      if greatest_cd!=i[1]:
-        i[0]*=(greatest_cd/i[1])
+    if lcm%i[1] == 0:
+      if lcm!=i[1]:
+        i[0]*=(lcm/i[1])
     result.append(i[0])
-  result.append(greatest_cd)
+  result.append(lcm)
   return(result)
-
-
 
 
 
@@ -372,7 +315,6 @@ def transposeMatrix(m):
             else:
                 tRow.append(m[c][r])
         t.append(tRow)
-        print(tRow)
     return t
 
           ##########
@@ -397,8 +339,6 @@ def getMatrixDeternminant(m):
 
 def getMatrixInverse(m):
     determinant = getMatrixDeternminant(m)
-    print("determinant")
-    print(determinant)
     #special case for 2x2 matrix:
     if len(m) == 2:
         return [[m[1][1]/determinant, -1*m[0][1]/determinant],
@@ -418,9 +358,22 @@ def getMatrixInverse(m):
             cofactors[r][c] = cofactors[r][c]/determinant
     return cofactors
 
+def lcmer(x, y):
+   if x > y:
+       z = x
+   else:
+       z = y
 
+   while(True):
+       if((z % x == 0) and (z % y == 0)):
+           lcm = z
+           break
+       z += 1
+
+   return lcm
 
 #------============================================--------------
+
 m = [
   [0, 2, 1, 0, 0],
   [0, 0, 0, 3, 4],
