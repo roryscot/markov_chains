@@ -1,18 +1,25 @@
 from fractions import Fraction
-import fractions
+# import fractions
+
+
 
 def answer(m):
+ #----Spectial Case------
   if len(m)==1:
     return [1,1]
+
+
  #----Initial Info------
+  #Identify terminal states
   terminals = terminal_finder(m)
+  #Evaluate naive probabilities
   divisions = divisions_of(m)
   common_denominator = common_denominator_finder(divisions)
   fractions = fratctionator(m, divisions)
 
+#----Set Matrix to standard form------
   mapped_order = mapper(m,terminals)
   reference_order = find_reference_order(mapped_order)
-
   #New row order
   row_order = reordered_rows(mapped_order)
   #Change columns
@@ -26,29 +33,34 @@ def answer(m):
   probabilities = probability_matrix(working_order, reordered_divisions, common_denominator, terminals)
   #Find Q
   q = q_finder(probabilities,terminals)
-
-
   #Set Identity Matrix
   idm = identity_matrix(m,q)
-
-
   #Find R
   r = r_finder(probabilities,terminals)
   #Find I-Q
   i_q = matrix_subtraction(idm, q)
+
+  #Special case for degenerate matricies (determinant of i_q == 0)
+  if getMatrixDeternminant(i_q)==0:
+    result = matrix_fractionator(m)
+    if q == idm:
+      return result[len(result)-(len(terminal)+2):]
+    else:
+      return result[len(result)-(len(terminal)+1):]
 
 
   #Get inversion
   inverse = getMatrixInverse(i_q)
   #multiply by R
   resultant_matrix = matrix_multiplier(inverse,r)
+
   #convert to fractions
   translated_resultant_matrix = matrix_fractionator(resultant_matrix)
 
   return translated_resultant_matrix
 
 
-
+######################################################################
 
 
 
@@ -276,31 +288,6 @@ def matrix_multiplier(a,b):
 
           ##########
 
-def matrix_fractionator(m):
-  pairs= []
-  denominators=[]
-  result=[]
-
-  for j in m[0]:
-    pairs.append([Fraction(j).limit_denominator().numerator,Fraction(j).limit_denominator().denominator])
-    denominators.append(Fraction(j).limit_denominator().denominator)
-
-  lcm = 1
-  for i in range(len(denominators)-1):
-    lcm = lcmer(lcmer(denominators[i],denominators[i+1]),lcm)
-
-  print(pairs)
-  print(denominators)
-
-  for i in pairs:
-    if lcm%i[1] == 0:
-      if lcm!=i[1]:
-        i[0]*=(lcm/i[1])
-    result.append(i[0])
-  result.append(lcm)
-  return(result)
-
-
 
 
 
@@ -358,6 +345,37 @@ def getMatrixInverse(m):
             cofactors[r][c] = cofactors[r][c]/determinant
     return cofactors
 
+
+
+#------============================================--------------
+
+#==========Matrix Interpretation======================
+
+
+def matrix_fractionator(m):
+  pairs= []
+  denominators=[]
+  result=[]
+
+  for j in m[0]:
+    pairs.append([Fraction(j).limit_denominator().numerator,Fraction(j).limit_denominator().denominator])
+    denominators.append(Fraction(j).limit_denominator().denominator)
+
+  lcm = 1
+  for i in range(len(denominators)-1):
+    lcm = lcmer(lcmer(denominators[i],denominators[i+1]),lcm)
+
+  print(pairs)
+  print(denominators)
+
+  for i in pairs:
+    if lcm%i[1] == 0:
+      if lcm!=i[1]:
+        i[0]*=(lcm/i[1])
+    result.append(i[0])
+  result.append(lcm)
+  return(result)
+
 def lcmer(x, y):
    if x > y:
        z = x
@@ -371,5 +389,3 @@ def lcmer(x, y):
        z += 1
 
    return lcm
-
-#------============================================--------------
