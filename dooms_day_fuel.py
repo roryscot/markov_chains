@@ -26,14 +26,17 @@ def answer(m):
   #Move new columns to new rows
   working_order = make_working_order(columns_order,reference_order)
   #Reorder divisions
-
+  reordered_divisions = divisions_reorder(divisions,reference_order)
 
   #-------Probability Matrix
-  probabilities = probability_matrix(working_order, divisions, common_denominator, terminals)
+  probabilities = probability_matrix(working_order, reordered_divisions, common_denominator, terminals)
+  print("probability_matrix: ")
+  for i in probabilities:
+    print(i)
 
   #print(terminals)
-  print(divisions)
-  print(common_denominator)
+  # print(divisions)
+  # print(common_denominator)
   #print(mapped_order)
   #print(working_order)
   #print(fractions)
@@ -171,6 +174,14 @@ def make_working_order(m,order):
 
           ##########
 
+def divisions_reorder(divisions,order):
+  new = []
+  for i in range(len(order)):
+    new.append(divisions[order[i]])
+  return new
+
+          ##########
+
 
 
 
@@ -178,19 +189,23 @@ def make_working_order(m,order):
       #This should examine the reordered matrix so that it give a standard form
 
 def probability_matrix(m, divisions, denominator,terminal):
-  print("probability_matrix: ")
-  ###These values are altered, which changes the mapped_order as well
+  probs = []
   for i in range(0,len(m)):
+    row = []
     for j in range(0,len(m[i])):
       if m[i][j] != 0:
-        m[i][j] = (m[i][j])/float(divisions[i])
-      if (m[i][j] == m[i][i]):
-        if i in terminal:
-          m[i][i]=1
-
-    print(m[i])
-  print(" ")
-  return m
+        row.append((m[i][j])/float(divisions[i]))
+      # elif (m[i][j] == m[i][i]):
+      #   if i in terminal:
+          # row.append(1)
+      else:
+        row.append(0)
+    probs.append(row)
+  for i in range(len(m)-len(terminal),len(m)):
+    for j in range(len(m)):
+      if (i == j):
+        probs[i][j] = 1
+  return probs
 
 #============Matrix Quadrants =================
 
