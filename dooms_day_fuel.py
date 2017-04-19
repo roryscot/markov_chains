@@ -36,6 +36,14 @@ def answer(m):
   idm = identity_matrix(m,q)
   #Find R
   r = r_finder(probabilities,terminals)
+  #Find I-Q
+  i_q = matrix_subtraction(idm, q)
+  #Get inversion
+  inverse = getMatrixInverse(i_q)
+  #multiply by R
+  resultant_matrix = matrix_multiplier(inverse,r)
+  #convert to fractions
+  translated_resultant_matrix = matrix_fractionator(resultant_matrix)
 
 
 
@@ -55,7 +63,21 @@ def answer(m):
   print(" ")
   print(idm)
   print(" ")
+  print("R ")
   print(r)
+  print(" ")
+  print("I-Q ")
+  print(i_q)
+  print(" ")
+  print("inverse")
+  print(inverse)
+  print(" ")
+  print("resultant_matrix")
+  print(resultant_matrix)
+  print(" ")
+  print("fractionated")
+  print(translated_resultant_matrix)
+  print(" ")
 
 
 
@@ -273,6 +295,68 @@ def identity_matrix(m,q):
   identity[0][0]=float(identity[0][0])
 
   return identity
+
+
+#==========Matrix Interaction======================
+
+
+def matrix_subtraction(identity,m):
+  result = []
+  for i in range(0,len(m)):
+    row = []
+    for j in range(0,len(m)):
+      #print(m[i][j])
+      row.append(identity[i][j]-m[i][j])
+    result.append(row)
+    #print(row)
+  return result
+
+          ##########
+
+
+def matrix_multiplier(a,b):
+  result = []
+  for i in range(0,len(a)):
+    row = []
+    for j in range(0, len(b[0])):
+      row.append(0)
+    result.append(row)
+
+  for i in range(len(a)):
+   for j in range(len(b[0])):
+       for k in range(len(b)):
+           result[i][j] += a[i][k] * b[k][j]
+
+  for i in result:
+    print(i)
+
+  return result
+
+          ##########
+
+def matrix_fractionator(m):
+  pairs= []
+  denominators=[]
+  result=[]
+
+  for j in m[0]:
+    pairs.append([Fraction(j).limit_denominator().numerator,Fraction(j).limit_denominator().denominator])
+    denominators.append(Fraction(j).limit_denominator().denominator)
+  greatest_cd=max(denominators)
+
+  for i in pairs:
+    if greatest_cd%i[1] == 0:
+      if greatest_cd!=i[1]:
+        i[0]*=(greatest_cd/i[1])
+    result.append(i[0])
+  result.append(greatest_cd)
+  return(result)
+
+
+
+
+
+
 
 #==========Matrix Inversion======================
 def transposeMatrix(m):
