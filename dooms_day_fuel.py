@@ -30,9 +30,16 @@ def answer(m):
 
   #-------Probability Matrix
   probabilities = probability_matrix(working_order, reordered_divisions, common_denominator, terminals)
-  print("probability_matrix: ")
-  for i in probabilities:
-    print(i)
+  #Find Q
+  q = q_finder(probabilities,terminals)
+  #Set Identity Matrix
+  idm = identity_matrix(m,q)
+  #Find R
+  r = r_finder(probabilities,terminals)
+
+
+
+
 
   #print(terminals)
   # print(divisions)
@@ -40,6 +47,16 @@ def answer(m):
   #print(mapped_order)
   #print(working_order)
   #print(fractions)
+  print("probability_matrix: ")
+  for i in probabilities:
+    print(i)
+  print("q ")
+  print(q)
+  print(" ")
+  print(idm)
+  print(" ")
+  print(r)
+
 
 
 
@@ -240,6 +257,22 @@ def r_finder(m,terminal):
       row.append(m[i][j])
     r.append(row)
   return r
+
+          ##########
+
+def identity_matrix(m,q):
+  identity = []
+  for i in range(0,len(q)):
+    row = []
+    for j in range(0,len(q)):
+      if (i == j ):
+        row.append(1)
+      else:
+        row.append(0)
+    identity.append(row)
+  identity[0][0]=float(identity[0][0])
+
+  return identity
 
 #==========Matrix Inversion======================
 def transposeMatrix(m):
